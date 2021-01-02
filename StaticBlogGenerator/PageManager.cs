@@ -4,7 +4,7 @@ using System.Text;
 
 namespace StaticBlogGenerator
 {
-    class Generator
+    class PageManager
     {
     }
 }
