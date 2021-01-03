@@ -6,7 +6,12 @@ namespace StaticBlogGenerator
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Generator generator = new Generator(
+                basePath: @"C:\Users\akwor\Documents\GitHub\StaticBlogGenerator\StaticBlogGenerator\Public\",
+                staticModelsPath: @"C:\Users\akwor\Documents\GitHub\StaticBlogGenerator\StaticBlogGenerator\StaticModels\"
+            );
+
+            generator.Build();
         }
     }
 }

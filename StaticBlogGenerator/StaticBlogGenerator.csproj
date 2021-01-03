@@ -6,9 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Public\_posts\" />
     <Folder Include="Public\_includes\" />
     <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotLiquid" Version="2.0.366" />
+    <PackageReference Include="Markdig" Version="0.22.1" />
+    <PackageReference Include="System.Json" Version="4.7.1" />
   </ItemGroup>
 
 </Project>
