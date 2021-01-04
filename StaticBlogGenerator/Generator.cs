@@ -1,6 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using StaticBlogGenerator.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace StaticBlogGenerator
@@ -42,17 +46,78 @@ namespace StaticBlogGenerator
         {
             string text = PostRender(postManager.GetPost("FirstPost.md"));
             Console.WriteLine(text);
+
+            
         }
 
+        /// <summary>
+        /// 정적 사이트 생성기를 사용하기위한 구조를 생성한다.
+        /// </summary>
+        public void Initialize()
+        {
+            // Config 파일이 없다면 생성한다.
+            if (!ConfigExists()) CreateConfig();
+
+            // LayoutTemplate을 생성한다.
+            //_templateManager.CreateLayoutTemplate();
+        }
 
         public string PostRender(string markdown)
         {
-            Dictionary<string, string> header = postManager.ParseHeader(markdown);
-            string body = postManager.parseBody(markdown);
+            Dictionary<string, string> postHeader = postManager.ParseHeader(markdown);
+            string postBody = postManager.parseBody(markdown);
+            Dictionary<string, string> templateHeader = new Dictionary<string, string>();
+            string text = templateManager.ApplyTemplate(postHeader["template"], new TemplateVariablesModel
+            {
+                Site = null,
+                Page = postHeader,
+                Content = postManager.MarkdownToHTML(postBody)
+            }, out templateHeader);
 
-            string text = templateManager.ApplypostTemplate(postManager.MarkdownToHTML(body), header);
-            var result = templateManager.ApplyLayoutTemplate(text);
+            var result = templateManager.ApplyLayoutTemplate(text, new TemplateVariablesModel
+            {
+                Site = ReadConfig(),
+                Template = templateHeader,
+                Content = text
+            });
+
             return result;
         }
+
+
+
+        #region Config
+
+        /// <summary>
+        /// _config.json 파일이 존재하는지 알려준다.
+        /// </summary>
+        /// <returns>_config.json 이 존재하면 ture, 그렇지않다면 false를 반환한다.</returns>
+        private bool ConfigExists()
+        {
+            return File.Exists(_configPath);
+        }
+
+        /// <summary>
+        /// _config.json 파일을 Dictionary 타입으로 읽어온다.
+        /// </summary>
+        /// <param name="configPath">_config.json 경로</param>
+        /// <returns>_config.json의 Dictionary</returns>
+        private Dictionary<string, object> ReadConfig()
+        {
+            return JsonConvert.DeserializeObject<Dictionary<string, object>>(File.ReadAllText(_configPath));
+        }
+
+        /// <summary>
+        /// _config.json 파일을 생성한다.
+        /// </summary>
+        private void CreateConfig()
+        {
+            string jsonString = File.ReadAllText(_staticModelsPath + "_config.json");
+            File.Create(_configPath).Close();
+
+            File.WriteAllText(_configPath, jsonString);
+        }
+
+        #endregion
     }
 }

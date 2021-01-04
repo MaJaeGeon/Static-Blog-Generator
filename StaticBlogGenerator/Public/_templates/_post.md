@@ -1,5 +1,6 @@
 ﻿+++
 template: _layout.md
+title : POST TEMPLATE
 +++
 
 <article>

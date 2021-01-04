@@ -1,1 +1,13 @@
-﻿
+﻿{
+  "title": "My Blog",
+  "menus": [
+    {
+      "Name": "Naver",
+      "Link": "naver"
+    },
+    {
+      "Name": "Daum",
+      "Link": "daum"
+    }
+  ]
+}
