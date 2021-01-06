@@ -1,5 +1,10 @@
 # Static-Blog-Generator
-Static Blog Generator
+정적 블로그 생성기 : 개발 중지
+
+## NuGet Package
+-   DotLiquid
+-   Markdig
+-   Newtonsoft.Json
 
 ## Directory Structure
 Public 폴더의 하위 구조
@@ -22,14 +27,20 @@ Public
 ```
 .
 ├── Models
+│   ├── TemplateModel.cs
+│   └── TemplateVariablesModel.cs
 ├── Public
 ├── StaticModels
 │   ├── _config.json
-│   └── _layout.html
+│   ├── _layout.html
+│   ├── _page.md
+│   └── _post.md
 ├── Generator.cs
+├── Manager.cs
+├── PageManager.cs
 ├── PostManager.cs
-├── TemplateManager.cs
-└── Program.cs
+├── Program.cs
+└── TemplateManager.cs
 ```
 
 #### Models
