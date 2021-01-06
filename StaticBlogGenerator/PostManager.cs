@@ -6,6 +6,9 @@ using System.Text;
 
 namespace StaticBlogGenerator
 {
+    /// <summary>
+    /// _templates 폴더에서 관리되는 파일들을 처리하는 클래스
+    /// </summary>
     public class PostManager : Manager
     {
         private readonly string _basePath   = null;

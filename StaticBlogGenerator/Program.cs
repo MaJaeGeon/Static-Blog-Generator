@@ -11,6 +11,7 @@ namespace StaticBlogGenerator
                 staticModelsPath: @"C:\Users\akwor\Documents\GitHub\StaticBlogGenerator\StaticBlogGenerator\StaticModels\"
             );
 
+            generator.Initialize();
             generator.Build();
         }
     }

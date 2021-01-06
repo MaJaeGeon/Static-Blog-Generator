@@ -9,10 +9,13 @@ using System.Text;
 
 namespace StaticBlogGenerator
 {
+    /// <summary>
+    /// _templates 폴더에서 관리되는 파일들을 처리하는 클래스
+    /// </summary>
     public class TemplateManager : Manager
     {
         private readonly string _basePath       = null;
-        private readonly string _templatesPath   = null;
+        private readonly string _templatesPath  = null;
 
         public TemplateManager(string basePath)
         {
@@ -34,15 +37,16 @@ namespace StaticBlogGenerator
 
             templateHeader = templateModel.TemplateHeader;
 
-            return template.Render(Hash.FromAnonymousObject(new
+            Hash hash = Hash.FromAnonymousObject(new
             {
                 site = templateVariables.Site,
                 page = templateVariables.Page,
                 content = templateVariables.Content,
                 template = templateVariables.Template
-            }));
-        }
+            });
 
+            return template.Render(hash);
+        }
         
         
         /// <summary>

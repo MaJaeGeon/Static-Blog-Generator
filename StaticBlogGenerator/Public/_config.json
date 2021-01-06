@@ -2,12 +2,12 @@
   "title": "My Blog",
   "menus": [
     {
-      "Name": "Naver",
-      "Link": "naver"
+      "name": "Name",
+      "link": "naver"
     },
     {
-      "Name": "Daum",
-      "Link": "daum"
+      "name": "Daum",
+      "link": "daum"
     }
   ]
 }

@@ -12,5 +12,14 @@
         <br />
         {{ content }}
     </div>
+
+    <nav>
+        <ul>
+            {% for menu in site.menus %}
+            <li>{{ menu }}</li>
+            <li><a href="{{ menu.[1] }}">{{ menu[0] }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
 </body>
 </html>

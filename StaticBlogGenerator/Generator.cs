@@ -24,6 +24,8 @@ namespace StaticBlogGenerator
         private readonly PostManager        postManager     = null;
         private readonly PageManager        pageManager     = null;
 
+        private IDictionary<string, object> _siteVariables = null;
+
         #endregion
 
         /// <summary>
@@ -58,6 +60,8 @@ namespace StaticBlogGenerator
             // Config 파일이 없다면 생성한다.
             if (!ConfigExists()) CreateConfig();
 
+            _siteVariables = ReadConfig();
+
             // LayoutTemplate을 생성한다.
             //_templateManager.CreateLayoutTemplate();
         }
@@ -65,18 +69,20 @@ namespace StaticBlogGenerator
         public string PostRender(string markdown)
         {
             Dictionary<string, string> postHeader = postManager.ParseHeader(markdown);
+
             string postBody = postManager.parseBody(markdown);
             Dictionary<string, string> templateHeader = new Dictionary<string, string>();
+
             string text = templateManager.ApplyTemplate(postHeader["template"], new TemplateVariablesModel
             {
-                Site = null,
+                Site = _siteVariables,
                 Page = postHeader,
                 Content = postManager.MarkdownToHTML(postBody)
             }, out templateHeader);
 
             var result = templateManager.ApplyLayoutTemplate(text, new TemplateVariablesModel
             {
-                Site = ReadConfig(),
+                Site = _siteVariables,
                 Template = templateHeader,
                 Content = text
             });
@@ -102,9 +108,12 @@ namespace StaticBlogGenerator
         /// </summary>
         /// <param name="configPath">_config.json 경로</param>
         /// <returns>_config.json의 Dictionary</returns>
-        private Dictionary<string, object> ReadConfig()
+        private IDictionary<string, object> ReadConfig()
         {
-            return JsonConvert.DeserializeObject<Dictionary<string, object>>(File.ReadAllText(_configPath));
+            JObject job = JObject.Parse(File.ReadAllText(_configPath));
+            job.ToObject<Dictionary<string, object>>();
+            
+            return JsonConvert.DeserializeObject<IDictionary<string, object>>(File.ReadAllText(_configPath));
         }
 
         /// <summary>
